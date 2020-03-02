@@ -20,7 +20,7 @@ public final class DoubleTapPlayerView extends PlayerView {
     public static final String TAG = ".DoubleTapPlayerView";
     public static boolean DEBUG = !BuildConfig.BUILD_TYPE.equals("release");
 
-    private boolean doubleTapActivated = true;
+    private boolean doubleTapActivated = false;
 
     private GestureDetectorCompat mDetector;
 
@@ -38,10 +38,10 @@ public final class DoubleTapPlayerView extends PlayerView {
 
     /**
      * Default time window in which the double tap is active
-     * Resets if another tap occurred within the time window by calling
+     * Resets if another tap occured within the time window by calling
      * {@link DoubleTapPlayerView#keepInDoubleTapMode()}
      **/
-    long doubleTapDelay = 650;
+    long DOUBLE_TAP_DELAY = 500;
 
     public DoubleTapPlayerView(Context context) {
         this(context, null);
@@ -90,12 +90,8 @@ public final class DoubleTapPlayerView extends PlayerView {
      * a gesture detector method instead of normal tap (see {@link PlayerView#onTouchEvent})
      */
     public DoubleTapPlayerView setDoubleTapDelay(int milliSeconds) {
-        this.doubleTapDelay = milliSeconds;
+        this.DOUBLE_TAP_DELAY = milliSeconds;
         return this;
-    }
-
-    public long getDoubleTapDelay() {
-        return this.doubleTapDelay;
     }
 
     /**
@@ -105,9 +101,8 @@ public final class DoubleTapPlayerView extends PlayerView {
      * from outside if the double tap is customized / overridden to detect ongoing taps
      */
     public void keepInDoubleTapMode() {
-        isDoubleTap = true;
         mHandler.removeCallbacks(mRunnable);
-        mHandler.postDelayed(mRunnable, doubleTapDelay);
+        mHandler.postDelayed(mRunnable, DOUBLE_TAP_DELAY);
     }
 
     /**
@@ -146,9 +141,6 @@ public final class DoubleTapPlayerView extends PlayerView {
 
     /**
      * Gesture Listener for double tapping
-     *
-     * For more information which methods are called in certain situations look for
-     * {@link GestureDetectorCompat#onTouchEvent}, especially for ACTION_DOWN and ACTION_UP
      */
     public class DoubleTapGestureListener extends GestureDetector.SimpleOnGestureListener {
 
