@@ -35,7 +35,6 @@
             android:textColor="@android:color/white"
             tools:drawableTop="@drawable/ic_rewind_animation_05"
             tools:text="20 Sekunden" />
-
     </FrameLayout>
 
     <FrameLayout
@@ -61,8 +60,6 @@
             android:textColor="@android:color/white"
             tools:drawableTop="@drawable/ic_forward_animation_08"
             tools:text="40 Sekunden" />
-
-
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

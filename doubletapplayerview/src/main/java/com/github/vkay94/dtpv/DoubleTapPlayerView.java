@@ -74,6 +74,17 @@ public final class DoubleTapPlayerView extends PlayerView {
         return this;
     }
 
+    public DoubleTapPlayerView setGestureDetector(GestureDetectorCompat detector) {
+        if (detector != null) {
+            mDetector = detector;
+        }
+        return this;
+    }
+
+    public GestureDetectorCompat getGestureDetector() {
+        return mDetector;
+    }
+
     /**
      * Changes the time window a double tap is active, so a followed tap is calling
      * a gesture detector method instead of normal tap (see {@link PlayerView#onTouchEvent})
@@ -108,6 +119,18 @@ public final class DoubleTapPlayerView extends PlayerView {
         controls.onDoubleTapFinished();
     }
 
+    public boolean isDoubleTap() {
+        return isDoubleTap;
+    }
+
+    public void setDoubleTap(boolean isDoubleTap) {
+        this.isDoubleTap = isDoubleTap;
+    }
+
+    public PlayerDoubleTapListener getControls() {
+        return controls;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (doubleTapActivated) {
@@ -127,7 +150,7 @@ public final class DoubleTapPlayerView extends PlayerView {
      * For more information which methods are called in certain situations look for
      * {@link GestureDetectorCompat#onTouchEvent}, especially for ACTION_DOWN and ACTION_UP
      */
-    private class DoubleTapGestureListener extends GestureDetector.SimpleOnGestureListener {
+    public class DoubleTapGestureListener extends GestureDetector.SimpleOnGestureListener {
 
         @Override
         public boolean onDown(MotionEvent e) {
