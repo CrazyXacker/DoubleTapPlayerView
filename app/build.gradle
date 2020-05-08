@@ -38,7 +38,9 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    implementation "com.google.android.exoplayer:exoplayer:2.10.4"
+    implementation("com.google.android.exoplayer:exoplayer:2.11.4") {
+        exclude group: 'com.google.android.gms'
+    }
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
 
     implementation project(path: ':doubletapplayerview')
