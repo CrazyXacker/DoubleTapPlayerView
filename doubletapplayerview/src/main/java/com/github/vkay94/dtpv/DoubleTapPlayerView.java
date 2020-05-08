@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 
 import androidx.core.view.GestureDetectorCompat;
 
-import com.google.android.exoplayer2.ui.PlayerView;
+import com.github.exoui.PlayerView;
 
 /**
  * Custom player class for Double-Tapping listening
