@@ -117,8 +117,8 @@ public final class SubtitleView extends View implements TextOutput {
       resources = context.getResources();
     }
     setTextSize(
-        Cue.TEXT_SIZE_TYPE_ABSOLUTE,
-        TypedValue.applyDimension(unit, size, resources.getDisplayMetrics()));
+            Cue.TEXT_SIZE_TYPE_ABSOLUTE,
+            TypedValue.applyDimension(unit, size, resources.getDisplayMetrics()));
   }
 
   /**
@@ -153,10 +153,10 @@ public final class SubtitleView extends View implements TextOutput {
    */
   public void setFractionalTextSize(float fractionOfHeight, boolean ignorePadding) {
     setTextSize(
-        ignorePadding
-            ? Cue.TEXT_SIZE_TYPE_FRACTIONAL_IGNORE_PADDING
-            : Cue.TEXT_SIZE_TYPE_FRACTIONAL,
-        fractionOfHeight);
+            ignorePadding
+                    ? Cue.TEXT_SIZE_TYPE_FRACTIONAL_IGNORE_PADDING
+                    : Cue.TEXT_SIZE_TYPE_FRACTIONAL,
+            fractionOfHeight);
   }
 
   private void setTextSize(@Cue.TextSizeType int textSizeType, float textSize) {
@@ -177,7 +177,7 @@ public final class SubtitleView extends View implements TextOutput {
    */
   public void setApplyEmbeddedStyles(boolean applyEmbeddedStyles) {
     if (this.applyEmbeddedStyles == applyEmbeddedStyles
-        && this.applyEmbeddedFontSizes == applyEmbeddedStyles) {
+            && this.applyEmbeddedFontSizes == applyEmbeddedStyles) {
       return;
     }
     this.applyEmbeddedStyles = applyEmbeddedStyles;
@@ -207,9 +207,9 @@ public final class SubtitleView extends View implements TextOutput {
    */
   public void setUserDefaultStyle() {
     setStyle(
-        Util.SDK_INT >= 19 && isCaptionManagerEnabled() && !isInEditMode()
-            ? getUserCaptionStyleV19()
-            : CaptionStyleCompat.DEFAULT);
+            Util.SDK_INT >= 19 && isCaptionManagerEnabled() && !isInEditMode()
+                    ? getUserCaptionStyleV19()
+                    : CaptionStyleCompat.DEFAULT);
   }
 
   /**
@@ -265,7 +265,7 @@ public final class SubtitleView extends View implements TextOutput {
     int viewHeightMinusPadding = bottom - top;
 
     float defaultViewTextSizePx =
-        resolveTextSize(textSizeType, textSize, rawViewHeight, viewHeightMinusPadding);
+            resolveTextSize(textSizeType, textSize, rawViewHeight, viewHeightMinusPadding);
     if (defaultViewTextSizePx <= 0) {
       // Text has no height.
       return;
@@ -277,18 +277,18 @@ public final class SubtitleView extends View implements TextOutput {
       float cueTextSizePx = resolveCueTextSize(cue, rawViewHeight, viewHeightMinusPadding);
       SubtitlePainter painter = painters.get(i);
       painter.draw(
-          cue,
-          applyEmbeddedStyles,
-          applyEmbeddedFontSizes,
-          style,
-          defaultViewTextSizePx,
-          cueTextSizePx,
-          bottomPaddingFraction,
-          canvas,
-          left,
-          top,
-          right,
-          bottom);
+              cue,
+              applyEmbeddedStyles,
+              applyEmbeddedFontSizes,
+              style,
+              defaultViewTextSizePx,
+              cueTextSizePx,
+              bottomPaddingFraction,
+              canvas,
+              left,
+              top,
+              right,
+              bottom);
     }
   }
 
@@ -297,15 +297,15 @@ public final class SubtitleView extends View implements TextOutput {
       return 0;
     }
     float defaultCueTextSizePx =
-        resolveTextSize(cue.textSizeType, cue.textSize, rawViewHeight, viewHeightMinusPadding);
+            resolveTextSize(cue.textSizeType, cue.textSize, rawViewHeight, viewHeightMinusPadding);
     return Math.max(defaultCueTextSizePx, 0);
   }
 
   private float resolveTextSize(
-      @Cue.TextSizeType int textSizeType,
-      float textSize,
-      int rawViewHeight,
-      int viewHeightMinusPadding) {
+          @Cue.TextSizeType int textSizeType,
+          float textSize,
+          int rawViewHeight,
+          int viewHeightMinusPadding) {
     switch (textSizeType) {
       case Cue.TEXT_SIZE_TYPE_ABSOLUTE:
         return textSize;
@@ -322,21 +322,21 @@ public final class SubtitleView extends View implements TextOutput {
   @TargetApi(19)
   private boolean isCaptionManagerEnabled() {
     CaptioningManager captioningManager =
-        (CaptioningManager) getContext().getSystemService(Context.CAPTIONING_SERVICE);
+            (CaptioningManager) getContext().getSystemService(Context.CAPTIONING_SERVICE);
     return captioningManager.isEnabled();
   }
 
   @TargetApi(19)
   private float getUserCaptionFontScaleV19() {
     CaptioningManager captioningManager =
-        (CaptioningManager) getContext().getSystemService(Context.CAPTIONING_SERVICE);
+            (CaptioningManager) getContext().getSystemService(Context.CAPTIONING_SERVICE);
     return captioningManager.getFontScale();
   }
 
   @TargetApi(19)
   private CaptionStyleCompat getUserCaptionStyleV19() {
     CaptioningManager captioningManager =
-        (CaptioningManager) getContext().getSystemService(Context.CAPTIONING_SERVICE);
+            (CaptioningManager) getContext().getSystemService(Context.CAPTIONING_SERVICE);
     return CaptionStyleCompat.createFromCaptionStyle(captioningManager.getUserStyle());
   }
 

@@ -161,18 +161,18 @@ import com.google.android.exoplayer2.util.Util;
    * @param cueBoxBottom The bottom position of the enclosing cue box.
    */
   public void draw(
-      Cue cue,
-      boolean applyEmbeddedStyles,
-      boolean applyEmbeddedFontSizes,
-      CaptionStyleCompat style,
-      float defaultTextSizePx,
-      float cueTextSizePx,
-      float bottomPaddingFraction,
-      Canvas canvas,
-      int cueBoxLeft,
-      int cueBoxTop,
-      int cueBoxRight,
-      int cueBoxBottom) {
+          Cue cue,
+          boolean applyEmbeddedStyles,
+          boolean applyEmbeddedFontSizes,
+          CaptionStyleCompat style,
+          float defaultTextSizePx,
+          float cueTextSizePx,
+          float bottomPaddingFraction,
+          Canvas canvas,
+          int cueBoxLeft,
+          int cueBoxTop,
+          int cueBoxRight,
+          int cueBoxBottom) {
     boolean isTextCue = cue.bitmap == null;
     int windowColor = Color.BLACK;
     if (isTextCue) {
@@ -181,33 +181,33 @@ import com.google.android.exoplayer2.util.Util;
         return;
       }
       windowColor = (cue.windowColorSet && applyEmbeddedStyles)
-          ? cue.windowColor : style.windowColor;
+              ? cue.windowColor : style.windowColor;
     }
     if (areCharSequencesEqual(this.cueText, cue.text)
-        && Util.areEqual(this.cueTextAlignment, cue.textAlignment)
-        && this.cueBitmap == cue.bitmap
-        && this.cueLine == cue.line
-        && this.cueLineType == cue.lineType
-        && Util.areEqual(this.cueLineAnchor, cue.lineAnchor)
-        && this.cuePosition == cue.position
-        && Util.areEqual(this.cuePositionAnchor, cue.positionAnchor)
-        && this.cueSize == cue.size
-        && this.cueBitmapHeight == cue.bitmapHeight
-        && this.applyEmbeddedStyles == applyEmbeddedStyles
-        && this.applyEmbeddedFontSizes == applyEmbeddedFontSizes
-        && this.foregroundColor == style.foregroundColor
-        && this.backgroundColor == style.backgroundColor
-        && this.windowColor == windowColor
-        && this.edgeType == style.edgeType
-        && this.edgeColor == style.edgeColor
-        && Util.areEqual(this.textPaint.getTypeface(), style.typeface)
-        && this.defaultTextSizePx == defaultTextSizePx
-        && this.cueTextSizePx == cueTextSizePx
-        && this.bottomPaddingFraction == bottomPaddingFraction
-        && this.parentLeft == cueBoxLeft
-        && this.parentTop == cueBoxTop
-        && this.parentRight == cueBoxRight
-        && this.parentBottom == cueBoxBottom) {
+            && Util.areEqual(this.cueTextAlignment, cue.textAlignment)
+            && this.cueBitmap == cue.bitmap
+            && this.cueLine == cue.line
+            && this.cueLineType == cue.lineType
+            && Util.areEqual(this.cueLineAnchor, cue.lineAnchor)
+            && this.cuePosition == cue.position
+            && Util.areEqual(this.cuePositionAnchor, cue.positionAnchor)
+            && this.cueSize == cue.size
+            && this.cueBitmapHeight == cue.bitmapHeight
+            && this.applyEmbeddedStyles == applyEmbeddedStyles
+            && this.applyEmbeddedFontSizes == applyEmbeddedFontSizes
+            && this.foregroundColor == style.foregroundColor
+            && this.backgroundColor == style.backgroundColor
+            && this.windowColor == windowColor
+            && this.edgeType == style.edgeType
+            && this.edgeColor == style.edgeColor
+            && Util.areEqual(this.textPaint.getTypeface(), style.typeface)
+            && this.defaultTextSizePx == defaultTextSizePx
+            && this.cueTextSizePx == cueTextSizePx
+            && this.bottomPaddingFraction == bottomPaddingFraction
+            && this.parentLeft == cueBoxLeft
+            && this.parentTop == cueBoxTop
+            && this.parentRight == cueBoxRight
+            && this.parentBottom == cueBoxBottom) {
       // We can use the cached layout.
       drawLayout(canvas, isTextCue);
       return;
@@ -251,9 +251,9 @@ import com.google.android.exoplayer2.util.Util;
 
   private void setupTextLayout() {
     SpannableStringBuilder cueText =
-        this.cueText instanceof SpannableStringBuilder
-            ? (SpannableStringBuilder) this.cueText
-            : new SpannableStringBuilder(this.cueText);
+            this.cueText instanceof SpannableStringBuilder
+                    ? (SpannableStringBuilder) this.cueText
+                    : new SpannableStringBuilder(this.cueText);
     int parentWidth = parentRight - parentLeft;
     int parentHeight = parentBottom - parentTop;
 
@@ -289,10 +289,10 @@ import com.google.android.exoplayer2.util.Util;
       if (cueTextSizePx > 0) {
         // Use an AbsoluteSizeSpan encompassing the whole text to apply the default cueTextSizePx.
         cueText.setSpan(
-            new AbsoluteSizeSpan((int) cueTextSizePx),
-            /* start= */ 0,
-            /* end= */ cueText.length(),
-            Spanned.SPAN_PRIORITY);
+                new AbsoluteSizeSpan((int) cueTextSizePx),
+                /* start= */ 0,
+                /* end= */ cueText.length(),
+                Spanned.SPAN_PRIORITY);
       }
     }
 
@@ -310,7 +310,7 @@ import com.google.android.exoplayer2.util.Util;
     SpannableStringBuilder cueTextEdge = new SpannableStringBuilder(cueText);
     if (edgeType == CaptionStyleCompat.EDGE_TYPE_OUTLINE) {
       ForegroundColorSpan[] foregroundColorSpans =
-          cueTextEdge.getSpans(0, cueTextEdge.length(), ForegroundColorSpan.class);
+              cueTextEdge.getSpans(0, cueTextEdge.length(), ForegroundColorSpan.class);
       for (ForegroundColorSpan foregroundColorSpan : foregroundColorSpans) {
         cueTextEdge.removeSpan(foregroundColorSpan);
       }
@@ -322,21 +322,21 @@ import com.google.android.exoplayer2.util.Util;
     // (https://github.com/google/ExoPlayer/pull/6724#issuecomment-564650572).
     if (Color.alpha(backgroundColor) > 0) {
       if (edgeType == CaptionStyleCompat.EDGE_TYPE_NONE
-          || edgeType == CaptionStyleCompat.EDGE_TYPE_DROP_SHADOW) {
+              || edgeType == CaptionStyleCompat.EDGE_TYPE_DROP_SHADOW) {
         cueText.setSpan(
-            new BackgroundColorSpan(backgroundColor), 0, cueText.length(), Spanned.SPAN_PRIORITY);
+                new BackgroundColorSpan(backgroundColor), 0, cueText.length(), Spanned.SPAN_PRIORITY);
       } else {
         cueTextEdge.setSpan(
-            new BackgroundColorSpan(backgroundColor),
-            0,
-            cueTextEdge.length(),
-            Spanned.SPAN_PRIORITY);
+                new BackgroundColorSpan(backgroundColor),
+                0,
+                cueTextEdge.length(),
+                Spanned.SPAN_PRIORITY);
       }
     }
 
     Alignment textAlignment = cueTextAlignment == null ? Alignment.ALIGN_CENTER : cueTextAlignment;
     textLayout = new StaticLayout(cueText, textPaint, availableWidth, textAlignment, spacingMult,
-        spacingAdd, true);
+            spacingAdd, true);
     int textHeight = textLayout.getHeight();
     int textWidth = 0;
     int lineCount = textLayout.getLineCount();
@@ -393,7 +393,7 @@ import com.google.android.exoplayer2.util.Util;
         }
       }
       textTop = cueLineAnchor == Cue.ANCHOR_TYPE_END ? anchorPosition - textHeight
-          : cueLineAnchor == Cue.ANCHOR_TYPE_MIDDLE ? (anchorPosition * 2 - textHeight) / 2
+              : cueLineAnchor == Cue.ANCHOR_TYPE_MIDDLE ? (anchorPosition * 2 - textHeight) / 2
               : anchorPosition;
       if (textTop + textHeight > parentBottom) {
         textTop = parentBottom - textHeight;
@@ -406,10 +406,10 @@ import com.google.android.exoplayer2.util.Util;
 
     // Update the derived drawing variables.
     this.textLayout = new StaticLayout(cueText, textPaint, textWidth, textAlignment, spacingMult,
-        spacingAdd, true);
+            spacingAdd, true);
     this.edgeLayout =
-        new StaticLayout(
-            cueTextEdge, textPaint, textWidth, textAlignment, spacingMult, spacingAdd, true);
+            new StaticLayout(
+                    cueTextEdge, textPaint, textWidth, textAlignment, spacingMult, spacingAdd, true);
     this.textLeft = textLeft;
     this.textTop = textTop;
     this.textPaddingX = textPaddingX;
@@ -423,17 +423,17 @@ import com.google.android.exoplayer2.util.Util;
     float anchorY = parentTop + (parentHeight * cueLine);
     int width = Math.round(parentWidth * cueSize);
     int height = cueBitmapHeight != Cue.DIMEN_UNSET ? Math.round(parentHeight * cueBitmapHeight)
-        : Math.round(width * ((float) cueBitmap.getHeight() / cueBitmap.getWidth()));
+            : Math.round(width * ((float) cueBitmap.getHeight() / cueBitmap.getWidth()));
     int x =
-        Math.round(
-            cuePositionAnchor == Cue.ANCHOR_TYPE_END
-                ? (anchorX - width)
-                : cuePositionAnchor == Cue.ANCHOR_TYPE_MIDDLE ? (anchorX - (width / 2)) : anchorX);
+            Math.round(
+                    cuePositionAnchor == Cue.ANCHOR_TYPE_END
+                            ? (anchorX - width)
+                            : cuePositionAnchor == Cue.ANCHOR_TYPE_MIDDLE ? (anchorX - (width / 2)) : anchorX);
     int y =
-        Math.round(
-            cueLineAnchor == Cue.ANCHOR_TYPE_END
-                ? (anchorY - height)
-                : cueLineAnchor == Cue.ANCHOR_TYPE_MIDDLE ? (anchorY - (height / 2)) : anchorY);
+            Math.round(
+                    cueLineAnchor == Cue.ANCHOR_TYPE_END
+                            ? (anchorY - height)
+                            : cueLineAnchor == Cue.ANCHOR_TYPE_MIDDLE ? (anchorY - (height / 2)) : anchorY);
     bitmapRect = new Rect(x, y, x + width, y + height);
   }
 
@@ -461,11 +461,11 @@ import com.google.android.exoplayer2.util.Util;
     if (Color.alpha(windowColor) > 0) {
       windowPaint.setColor(windowColor);
       canvas.drawRect(
-          -textPaddingX,
-          0,
-          textLayout.getWidth() + textPaddingX,
-          textLayout.getHeight(),
-          windowPaint);
+              -textPaddingX,
+              0,
+              textLayout.getWidth() + textPaddingX,
+              textLayout.getHeight(),
+              windowPaint);
     }
 
     if (mOutlineSpan != null) {
@@ -477,7 +477,7 @@ import com.google.android.exoplayer2.util.Util;
     }
     if (mShadowSpan != null) {
       textPaint.setShadowLayer(mShadowSpan.getRadius(), mShadowSpan.getDx(),
-          mShadowSpan.getDy(), mShadowSpan.getColor());
+              mShadowSpan.getDy(), mShadowSpan.getColor());
       edgeLayout.draw(canvas);
     }
     if (mOutlineSpan != null && edgeType == CaptionStyleCompat.EDGE_TYPE_OUTLINE) {
@@ -489,7 +489,7 @@ import com.google.android.exoplayer2.util.Util;
     } else if (mShadowSpan != null && edgeType == CaptionStyleCompat.EDGE_TYPE_DROP_SHADOW) {
       textPaint.setShadowLayer(shadowRadius, shadowOffset, shadowOffset, edgeColor);
     } else if (edgeType == CaptionStyleCompat.EDGE_TYPE_RAISED
-        || edgeType == CaptionStyleCompat.EDGE_TYPE_DEPRESSED) {
+            || edgeType == CaptionStyleCompat.EDGE_TYPE_DEPRESSED) {
       boolean raised = edgeType == CaptionStyleCompat.EDGE_TYPE_RAISED;
       int colorUp = raised ? Color.WHITE : edgeColor;
       int colorDown = raised ? edgeColor : Color.WHITE;
@@ -520,7 +520,7 @@ import com.google.android.exoplayer2.util.Util;
    */
   @SuppressWarnings("UndefinedEquals")
   private static boolean areCharSequencesEqual(
-      @Nullable CharSequence first, @Nullable CharSequence second) {
+          @Nullable CharSequence first, @Nullable CharSequence second) {
     // Some CharSequence implementations don't perform a cheap referential equality check in their
     // equals methods, so we perform one explicitly here.
     return first == second || (first != null && first.equals(second));

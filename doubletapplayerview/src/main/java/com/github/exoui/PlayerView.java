@@ -41,6 +41,8 @@ import android.widget.TextView;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+
+import com.github.vkay94.dtpv.R;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ControlDispatcher;
 import com.google.android.exoplayer2.DefaultControlDispatcher;
@@ -194,23 +196,23 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
         playerLayoutId = a.getResourceId(com.google.android.exoplayer2.ui.R.styleable.PlayerView_player_layout_id, playerLayoutId);
         useArtwork = a.getBoolean(com.google.android.exoplayer2.ui.R.styleable.PlayerView_use_artwork, useArtwork);
         defaultArtworkId =
-            a.getResourceId(com.google.android.exoplayer2.ui.R.styleable.PlayerView_default_artwork, defaultArtworkId);
+                a.getResourceId(com.google.android.exoplayer2.ui.R.styleable.PlayerView_default_artwork, defaultArtworkId);
         useController = a.getBoolean(com.google.android.exoplayer2.ui.R.styleable.PlayerView_use_controller, useController);
         surfaceType = a.getInt(com.google.android.exoplayer2.ui.R.styleable.PlayerView_surface_type, surfaceType);
         resizeMode = a.getInt(com.google.android.exoplayer2.ui.R.styleable.PlayerView_resize_mode, resizeMode);
         controllerShowTimeoutMs =
-            a.getInt(com.google.android.exoplayer2.ui.R.styleable.PlayerView_show_timeout, controllerShowTimeoutMs);
+                a.getInt(com.google.android.exoplayer2.ui.R.styleable.PlayerView_show_timeout, controllerShowTimeoutMs);
         controllerHideOnTouch =
-            a.getBoolean(com.google.android.exoplayer2.ui.R.styleable.PlayerView_hide_on_touch, controllerHideOnTouch);
+                a.getBoolean(com.google.android.exoplayer2.ui.R.styleable.PlayerView_hide_on_touch, controllerHideOnTouch);
         controllerAutoShow = a.getBoolean(com.google.android.exoplayer2.ui.R.styleable.PlayerView_auto_show, controllerAutoShow);
         showBuffering = a.getInteger(com.google.android.exoplayer2.ui.R.styleable.PlayerView_show_buffering, showBuffering);
         keepContentOnPlayerReset =
-            a.getBoolean(
-                com.google.android.exoplayer2.ui.R.styleable.PlayerView_keep_content_on_player_reset, keepContentOnPlayerReset);
+                a.getBoolean(
+                        com.google.android.exoplayer2.ui.R.styleable.PlayerView_keep_content_on_player_reset, keepContentOnPlayerReset);
         controllerHideDuringAds =
-            a.getBoolean(com.google.android.exoplayer2.ui.R.styleable.PlayerView_hide_during_ads, controllerHideDuringAds);
+                a.getBoolean(com.google.android.exoplayer2.ui.R.styleable.PlayerView_hide_during_ads, controllerHideDuringAds);
         useSensorRotation =
-            a.getBoolean(com.google.android.exoplayer2.ui.R.styleable.PlayerView_use_sensor_rotation, useSensorRotation);
+                a.getBoolean(com.google.android.exoplayer2.ui.R.styleable.PlayerView_use_sensor_rotation, useSensorRotation);
       } finally {
         a.recycle();
       }
@@ -220,13 +222,13 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
 
     // Content frame.
-    contentFrame = findViewById(com.google.android.exoplayer2.ui.R.id.exo_content_frame);
+    contentFrame = findViewById(R.id.exo_content_frame);
     if (contentFrame != null) {
       setResizeModeRaw(contentFrame, resizeMode);
     }
 
     // Shutter view.
-    shutterView = findViewById(com.google.android.exoplayer2.ui.R.id.exo_shutter);
+    shutterView = findViewById(R.id.exo_shutter);
     if (shutterView != null && shutterColorSet) {
       shutterView.setBackgroundColor(shutterColor);
     }
@@ -234,8 +236,8 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     // Create a surface view and insert it into the content frame, if there is one.
     if (contentFrame != null && surfaceType != SURFACE_TYPE_NONE) {
       ViewGroup.LayoutParams params =
-          new ViewGroup.LayoutParams(
-              ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+              new ViewGroup.LayoutParams(
+                      ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
       switch (surfaceType) {
         case SURFACE_TYPE_TEXTURE_VIEW:
           surfaceView = new TextureView(context);
@@ -260,41 +262,41 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     }
 
     // Ad overlay frame layout.
-    adOverlayFrameLayout = findViewById(com.google.android.exoplayer2.ui.R.id.exo_ad_overlay);
+    adOverlayFrameLayout = findViewById(R.id.exo_ad_overlay);
 
     // Overlay frame layout.
-    overlayFrameLayout = findViewById(com.google.android.exoplayer2.ui.R.id.exo_overlay);
+    overlayFrameLayout = findViewById(R.id.exo_overlay);
 
     // Artwork view.
-    artworkView = findViewById(com.google.android.exoplayer2.ui.R.id.exo_artwork);
+    artworkView = findViewById(R.id.exo_artwork);
     this.useArtwork = useArtwork && artworkView != null;
     if (defaultArtworkId != 0) {
       defaultArtwork = ContextCompat.getDrawable(getContext(), defaultArtworkId);
     }
 
     // Subtitle view.
-    subtitleView = findViewById(com.google.android.exoplayer2.ui.R.id.exo_subtitles);
+    subtitleView = findViewById(R.id.exo_subtitles);
     if (subtitleView != null) {
       subtitleView.setUserDefaultStyle();
       subtitleView.setUserDefaultTextSize();
     }
 
     // Buffering view.
-    bufferingView = findViewById(com.google.android.exoplayer2.ui.R.id.exo_buffering);
+    bufferingView = findViewById(R.id.exo_buffering);
     if (bufferingView != null) {
       bufferingView.setVisibility(View.GONE);
     }
     this.showBuffering = showBuffering;
 
     // Error message view.
-    errorMessageView = findViewById(com.google.android.exoplayer2.ui.R.id.exo_error_message);
+    errorMessageView = findViewById(R.id.exo_error_message);
     if (errorMessageView != null) {
       errorMessageView.setVisibility(View.GONE);
     }
 
     // Playback control view.
     PlayerControlView customController = findViewById(com.google.android.exoplayer2.ui.R.id.exo_controller);
-    View controllerPlaceholder = findViewById(com.google.android.exoplayer2.ui.R.id.exo_controller_placeholder);
+    View controllerPlaceholder = findViewById(R.id.exo_controller_placeholder);
     if (customController != null) {
       this.controller = customController;
     } else if (controllerPlaceholder != null) {
@@ -330,7 +332,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
    * @param newPlayerView The new view to attach to the player.
    */
   public static void switchTargetView(
-      Player player, @Nullable PlayerView oldPlayerView, @Nullable PlayerView newPlayerView) {
+          Player player, @Nullable PlayerView oldPlayerView, @Nullable PlayerView newPlayerView) {
     if (oldPlayerView == newPlayerView) {
       return;
     }
@@ -368,7 +370,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
   public void setPlayer(@Nullable Player player) {
     Assertions.checkState(Looper.myLooper() == Looper.getMainLooper());
     Assertions.checkArgument(
-        player == null || player.getApplicationLooper() == Looper.getMainLooper());
+            player == null || player.getApplicationLooper() == Looper.getMainLooper());
     if (this.player == player) {
       return;
     }
@@ -412,7 +414,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
           ((SphericalGLSurfaceView) surfaceView).setVideoComponent(newVideoComponent);
         } else if (surfaceView instanceof VideoDecoderGLSurfaceView) {
           newVideoComponent.setVideoDecoderOutputBufferRenderer(
-              ((VideoDecoderGLSurfaceView) surfaceView).getVideoDecoderOutputBufferRenderer());
+                  ((VideoDecoderGLSurfaceView) surfaceView).getVideoDecoderOutputBufferRenderer());
         } else if (surfaceView instanceof SurfaceView) {
           newVideoComponent.setVideoSurfaceView((SurfaceView) surfaceView);
         }
@@ -482,7 +484,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
   @Deprecated
   public void setDefaultArtwork(@Nullable Bitmap defaultArtwork) {
     setDefaultArtwork(
-        defaultArtwork == null ? null : new BitmapDrawable(getResources(), defaultArtwork));
+            defaultArtwork == null ? null : new BitmapDrawable(getResources(), defaultArtwork));
   }
 
   /**
@@ -611,7 +613,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
    * @param errorMessageProvider The error message provider.
    */
   public void setErrorMessageProvider(
-      @Nullable ErrorMessageProvider<? super ExoPlaybackException> errorMessageProvider) {
+          @Nullable ErrorMessageProvider<? super ExoPlaybackException> errorMessageProvider) {
     if (this.errorMessageProvider != errorMessageProvider) {
       this.errorMessageProvider = errorMessageProvider;
       updateErrorMessage();
@@ -769,7 +771,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
    *     current listener.
    */
   public void setControllerVisibilityListener(
-      @Nullable PlayerControlView.VisibilityListener listener) {
+          @Nullable PlayerControlView.VisibilityListener listener) {
     Assertions.checkStateNotNull(controller);
     if (this.controllerVisibilityListener == listener) {
       return;
@@ -868,7 +870,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
    *     markers.
    */
   public void setExtraAdGroupMarkers(
-      @Nullable long[] extraAdGroupTimesMs, @Nullable boolean[] extraPlayedAdGroups) {
+          @Nullable long[] extraAdGroupTimesMs, @Nullable boolean[] extraPlayedAdGroups) {
     Assertions.checkStateNotNull(controller);
     controller.setExtraAdGroupMarkers(extraAdGroupTimesMs, extraPlayedAdGroups);
   }
@@ -880,7 +882,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
    *     the content frame.
    */
   public void setAspectRatioListener(
-      @Nullable AspectRatioFrameLayout.AspectRatioListener listener) {
+          @Nullable AspectRatioFrameLayout.AspectRatioListener listener) {
     Assertions.checkStateNotNull(contentFrame);
     contentFrame.setAspectRatioListener(listener);
   }
@@ -1003,12 +1005,12 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
    * @param contentView The view that holds the content being displayed, or {@code null}.
    */
   protected void onContentAspectRatioChanged(
-      float contentAspectRatio,
-      @Nullable AspectRatioFrameLayout contentFrame,
-      @Nullable View contentView) {
+          float contentAspectRatio,
+          @Nullable AspectRatioFrameLayout contentFrame,
+          @Nullable View contentView) {
     if (contentFrame != null) {
       contentFrame.setAspectRatio(
-          contentView instanceof SphericalGLSurfaceView ? 0 : contentAspectRatio);
+              contentView instanceof SphericalGLSurfaceView ? 0 : contentAspectRatio);
     }
   }
 
@@ -1017,7 +1019,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
   @Override
   public ViewGroup getAdViewGroup() {
     return Assertions.checkStateNotNull(
-        adOverlayFrameLayout, "exo_ad_overlay must be present for ad playback");
+            adOverlayFrameLayout, "exo_ad_overlay must be present for ad playback");
   }
 
   @Override
@@ -1082,7 +1084,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     }
     int playbackState = player.getPlaybackState();
     return controllerAutoShow
-        && (playbackState == Player.STATE_IDLE
+            && (playbackState == Player.STATE_IDLE
             || playbackState == Player.STATE_ENDED
             || !player.getPlayWhenReady());
   }
@@ -1207,10 +1209,10 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
   private void updateBuffering() {
     if (bufferingView != null) {
       boolean showBufferingSpinner =
-          player != null
-              && player.getPlaybackState() == Player.STATE_BUFFERING
-              && (showBuffering == SHOW_BUFFERING_ALWAYS
-                  || (showBuffering == SHOW_BUFFERING_WHEN_PLAYING && player.getPlayWhenReady()));
+              player != null
+                      && player.getPlaybackState() == Player.STATE_BUFFERING
+                      && (showBuffering == SHOW_BUFFERING_ALWAYS
+                      || (showBuffering == SHOW_BUFFERING_WHEN_PLAYING && player.getPlayWhenReady()));
       bufferingView.setVisibility(showBufferingSpinner ? View.VISIBLE : View.GONE);
     }
   }
@@ -1238,12 +1240,12 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
       setContentDescription(/* contentDescription= */ null);
     } else if (controller.getVisibility() == View.VISIBLE) {
       setContentDescription(
-          /* contentDescription= */ controllerHideOnTouch
-              ? getResources().getString(com.google.android.exoplayer2.ui.R.string.exo_controls_hide)
-              : null);
+              /* contentDescription= */ controllerHideOnTouch
+                      ? getResources().getString(com.google.android.exoplayer2.ui.R.string.exo_controls_hide)
+                      : null);
     } else {
       setContentDescription(
-          /* contentDescription= */ getResources().getString(com.google.android.exoplayer2.ui.R.string.exo_controls_show));
+              /* contentDescription= */ getResources().getString(com.google.android.exoplayer2.ui.R.string.exo_controls_show));
     }
   }
 
@@ -1278,10 +1280,10 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
       RectF rotatedTextureRect = new RectF();
       transformMatrix.mapRect(rotatedTextureRect, originalTextureRect);
       transformMatrix.postScale(
-          textureViewWidth / rotatedTextureRect.width(),
-          textureViewHeight / rotatedTextureRect.height(),
-          pivotX,
-          pivotY);
+              textureViewWidth / rotatedTextureRect.width(),
+              textureViewHeight / rotatedTextureRect.height(),
+              pivotX,
+              pivotY);
     }
     textureView.setTransform(transformMatrix);
   }
@@ -1289,18 +1291,18 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
   @SuppressLint("InlinedApi")
   private boolean isDpadKey(int keyCode) {
     return keyCode == KeyEvent.KEYCODE_DPAD_UP
-        || keyCode == KeyEvent.KEYCODE_DPAD_UP_RIGHT
-        || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
-        || keyCode == KeyEvent.KEYCODE_DPAD_DOWN_RIGHT
-        || keyCode == KeyEvent.KEYCODE_DPAD_DOWN
-        || keyCode == KeyEvent.KEYCODE_DPAD_DOWN_LEFT
-        || keyCode == KeyEvent.KEYCODE_DPAD_LEFT
-        || keyCode == KeyEvent.KEYCODE_DPAD_UP_LEFT
-        || keyCode == KeyEvent.KEYCODE_DPAD_CENTER;
+            || keyCode == KeyEvent.KEYCODE_DPAD_UP_RIGHT
+            || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
+            || keyCode == KeyEvent.KEYCODE_DPAD_DOWN_RIGHT
+            || keyCode == KeyEvent.KEYCODE_DPAD_DOWN
+            || keyCode == KeyEvent.KEYCODE_DPAD_DOWN_LEFT
+            || keyCode == KeyEvent.KEYCODE_DPAD_LEFT
+            || keyCode == KeyEvent.KEYCODE_DPAD_UP_LEFT
+            || keyCode == KeyEvent.KEYCODE_DPAD_CENTER;
   }
 
   private final class ComponentListener
-      implements Player.EventListener,
+          implements Player.EventListener,
           TextOutput,
           VideoListener,
           OnLayoutChangeListener,
@@ -1320,9 +1322,9 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
 
     @Override
     public void onVideoSizeChanged(
-        int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+            int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
       float videoAspectRatio =
-          (height == 0 || width == 0) ? 1 : (width * pixelWidthHeightRatio) / height;
+              (height == 0 || width == 0) ? 1 : (width * pixelWidthHeightRatio) / height;
 
       if (surfaceView instanceof TextureView) {
         // Try to apply rotation transformation when our surface is a TextureView.
@@ -1382,15 +1384,15 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
 
     @Override
     public void onLayoutChange(
-        View view,
-        int left,
-        int top,
-        int right,
-        int bottom,
-        int oldLeft,
-        int oldTop,
-        int oldRight,
-        int oldBottom) {
+            View view,
+            int left,
+            int top,
+            int right,
+            int bottom,
+            int oldLeft,
+            int oldTop,
+            int oldRight,
+            int oldBottom) {
       applyTextureViewRotation((TextureView) view, textureViewRotation);
     }
 
