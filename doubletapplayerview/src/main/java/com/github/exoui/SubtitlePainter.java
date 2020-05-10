@@ -102,6 +102,7 @@ import com.google.android.exoplayer2.util.Util;
   // Derived drawing variables.
   private StaticLayout textLayout;
   private StaticLayout edgeLayout;
+  private StaticLayout shadowLayout;
   private int textLeft;
   private int textTop;
   private int textPaddingX;
@@ -410,6 +411,9 @@ import com.google.android.exoplayer2.util.Util;
     this.edgeLayout =
             new StaticLayout(
                     cueTextEdge, textPaint, textWidth, textAlignment, spacingMult, spacingAdd, true);
+    this.shadowLayout =
+            new StaticLayout(
+                    cueTextEdge, textPaint, textWidth, textAlignment, spacingMult, spacingAdd, true);
     this.textLeft = textLeft;
     this.textTop = textTop;
     this.textPaddingX = textPaddingX;
@@ -450,7 +454,8 @@ import com.google.android.exoplayer2.util.Util;
   private void drawTextLayout(Canvas canvas) {
     StaticLayout textLayout = this.textLayout;
     StaticLayout edgeLayout = this.edgeLayout;
-    if (textLayout == null || edgeLayout == null) {
+    StaticLayout shadowLayout = this.shadowLayout;
+    if (textLayout == null || edgeLayout == null || shadowLayout == null) {
       // Nothing to draw.
       return;
     }
@@ -468,16 +473,17 @@ import com.google.android.exoplayer2.util.Util;
               windowPaint);
     }
 
+    if (mShadowSpan != null) {
+      textPaint.setShadowLayer(mShadowSpan.getRadius(), mShadowSpan.getDx(),
+              mShadowSpan.getDy(), mShadowSpan.getColor());
+      shadowLayout.draw(canvas);
+    }
     if (mOutlineSpan != null) {
+      textPaint.clearShadowLayer();
       textPaint.setStrokeJoin(mOutlineSpan.getJoin());
       textPaint.setStrokeWidth(mOutlineSpan.getStrokeWidth());
       textPaint.setColor(mOutlineSpan.getStrokeColor());
       textPaint.setStyle(mOutlineSpan.getStyle());
-      edgeLayout.draw(canvas);
-    }
-    if (mShadowSpan != null) {
-      textPaint.setShadowLayer(mShadowSpan.getRadius(), mShadowSpan.getDx(),
-              mShadowSpan.getDy(), mShadowSpan.getColor());
       edgeLayout.draw(canvas);
     }
     if (mOutlineSpan == null && edgeType == CaptionStyleCompat.EDGE_TYPE_OUTLINE) {
