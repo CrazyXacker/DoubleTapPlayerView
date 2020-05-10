@@ -480,13 +480,13 @@ import com.google.android.exoplayer2.util.Util;
               mShadowSpan.getDy(), mShadowSpan.getColor());
       edgeLayout.draw(canvas);
     }
-    if (mOutlineSpan != null && edgeType == CaptionStyleCompat.EDGE_TYPE_OUTLINE) {
+    if (mOutlineSpan == null && edgeType == CaptionStyleCompat.EDGE_TYPE_OUTLINE) {
       textPaint.setStrokeJoin(Join.ROUND);
       textPaint.setStrokeWidth(outlineWidth);
       textPaint.setColor(edgeColor);
       textPaint.setStyle(Style.FILL_AND_STROKE);
       edgeLayout.draw(canvas);
-    } else if (mShadowSpan != null && edgeType == CaptionStyleCompat.EDGE_TYPE_DROP_SHADOW) {
+    } else if (mShadowSpan == null && edgeType == CaptionStyleCompat.EDGE_TYPE_DROP_SHADOW) {
       textPaint.setShadowLayer(shadowRadius, shadowOffset, shadowOffset, edgeColor);
     } else if (edgeType == CaptionStyleCompat.EDGE_TYPE_RAISED
             || edgeType == CaptionStyleCompat.EDGE_TYPE_DEPRESSED) {
