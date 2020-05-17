@@ -28,6 +28,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Looper;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -111,7 +112,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
   private final ComponentListener componentListener;
   @Nullable private final AspectRatioFrameLayout contentFrame;
   @Nullable private final View shutterView;
-  @Nullable private final View surfaceView;
+  @Nullable private View surfaceView;
   @Nullable private final ImageView artworkView;
   @Nullable private final SubtitleView subtitleView;
   @Nullable private final View bufferingView;
@@ -233,33 +234,7 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
       shutterView.setBackgroundColor(shutterColor);
     }
 
-    // Create a surface view and insert it into the content frame, if there is one.
-    if (contentFrame != null && surfaceType != SURFACE_TYPE_NONE) {
-      ViewGroup.LayoutParams params =
-              new ViewGroup.LayoutParams(
-                      ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-      switch (surfaceType) {
-        case SURFACE_TYPE_TEXTURE_VIEW:
-          surfaceView = new TextureView(context);
-          break;
-        case SURFACE_TYPE_SPHERICAL_GL_SURFACE_VIEW:
-          SphericalGLSurfaceView sphericalGLSurfaceView = new SphericalGLSurfaceView(context);
-          sphericalGLSurfaceView.setSingleTapListener(componentListener);
-          sphericalGLSurfaceView.setUseSensorRotation(useSensorRotation);
-          surfaceView = sphericalGLSurfaceView;
-          break;
-        case SURFACE_TYPE_VIDEO_DECODER_GL_SURFACE_VIEW:
-          surfaceView = new VideoDecoderGLSurfaceView(context);
-          break;
-        default:
-          surfaceView = new SurfaceView(context);
-          break;
-      }
-      surfaceView.setLayoutParams(params);
-      contentFrame.addView(surfaceView, 0);
-    } else {
-      surfaceView = null;
-    }
+    createSurfaceView(context, surfaceType);
 
     // Ad overlay frame layout.
     adOverlayFrameLayout = findViewById(R.id.exo_ad_overlay);
@@ -324,6 +299,37 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     }
   }
 
+  public void createSurfaceView(Context context, int surfaceType) {
+    // Create a surface view and insert it into the content frame, if there is one.
+    if (contentFrame != null && surfaceType != SURFACE_TYPE_NONE) {
+      ViewGroup.LayoutParams params =
+              new ViewGroup.LayoutParams(
+                      ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+      switch (surfaceType) {
+        case SURFACE_TYPE_TEXTURE_VIEW:
+          surfaceView = new TextureView(context);
+          break;
+        case SURFACE_TYPE_SPHERICAL_GL_SURFACE_VIEW:
+          SphericalGLSurfaceView sphericalGLSurfaceView = new SphericalGLSurfaceView(context);
+          sphericalGLSurfaceView.setSingleTapListener(componentListener);
+          sphericalGLSurfaceView.setUseSensorRotation(useSensorRotation);
+          surfaceView = sphericalGLSurfaceView;
+          break;
+        case SURFACE_TYPE_VIDEO_DECODER_GL_SURFACE_VIEW:
+          surfaceView = new VideoDecoderGLSurfaceView(context);
+          break;
+        default:
+          surfaceView = new SurfaceView(context);
+          break;
+      }
+      surfaceView.setLayoutParams(params);
+      contentFrame.addView(surfaceView, 0);
+      setSurfaceVisibility(View.VISIBLE);
+    } else {
+      surfaceView = null;
+    }
+  }
+
   /**
    * Switches the view targeted by a given {@link Player}.
    *
@@ -374,6 +380,26 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
     if (this.player == player) {
       return;
     }
+    clearPlayerComponent();
+    this.player = player;
+    if (useController()) {
+      controller.setPlayer(player);
+    }
+    if (subtitleView != null) {
+      subtitleView.setCues(null);
+    }
+    updateBuffering();
+    updateErrorMessage();
+    updateForCurrentTrackSelections(/* isNewPlayer= */ true);
+    if (player != null) {
+      createVideoComponent(player);
+      maybeShowController(false);
+    } else {
+      hideController();
+    }
+  }
+
+  public void clearPlayerComponent() {
     @Nullable Player oldPlayer = this.player;
     if (oldPlayer != null) {
       oldPlayer.removeListener(componentListener);
@@ -395,39 +421,40 @@ public class PlayerView extends FrameLayout implements AdsLoader.AdViewProvider 
         oldTextComponent.removeTextOutput(componentListener);
       }
     }
-    this.player = player;
-    if (useController()) {
-      controller.setPlayer(player);
+  }
+
+  public void createVideoComponent(@Nullable Player player) {
+    if (player == null) {
+      player = this.player;
     }
-    if (subtitleView != null) {
-      subtitleView.setCues(null);
+    @Nullable Player.VideoComponent newVideoComponent = player.getVideoComponent();
+    if (newVideoComponent != null) {
+      if (surfaceView instanceof TextureView) {
+        newVideoComponent.setVideoTextureView((TextureView) surfaceView);
+      } else if (surfaceView instanceof SphericalGLSurfaceView) {
+        ((SphericalGLSurfaceView) surfaceView).setVideoComponent(newVideoComponent);
+      } else if (surfaceView instanceof VideoDecoderGLSurfaceView) {
+        newVideoComponent.setVideoDecoderOutputBufferRenderer(
+                ((VideoDecoderGLSurfaceView) surfaceView).getVideoDecoderOutputBufferRenderer());
+      } else if (surfaceView instanceof SurfaceView) {
+        newVideoComponent.setVideoSurfaceView((SurfaceView) surfaceView);
+      }
+      newVideoComponent.addVideoListener(componentListener);
     }
-    updateBuffering();
-    updateErrorMessage();
-    updateForCurrentTrackSelections(/* isNewPlayer= */ true);
-    if (player != null) {
-      @Nullable Player.VideoComponent newVideoComponent = player.getVideoComponent();
-      if (newVideoComponent != null) {
-        if (surfaceView instanceof TextureView) {
-          newVideoComponent.setVideoTextureView((TextureView) surfaceView);
-        } else if (surfaceView instanceof SphericalGLSurfaceView) {
-          ((SphericalGLSurfaceView) surfaceView).setVideoComponent(newVideoComponent);
-        } else if (surfaceView instanceof VideoDecoderGLSurfaceView) {
-          newVideoComponent.setVideoDecoderOutputBufferRenderer(
-                  ((VideoDecoderGLSurfaceView) surfaceView).getVideoDecoderOutputBufferRenderer());
-        } else if (surfaceView instanceof SurfaceView) {
-          newVideoComponent.setVideoSurfaceView((SurfaceView) surfaceView);
-        }
-        newVideoComponent.addVideoListener(componentListener);
-      }
-      @Nullable Player.TextComponent newTextComponent = player.getTextComponent();
-      if (newTextComponent != null) {
-        newTextComponent.addTextOutput(componentListener);
-      }
-      player.addListener(componentListener);
-      maybeShowController(false);
-    } else {
-      hideController();
+    @Nullable Player.TextComponent newTextComponent = player.getTextComponent();
+    if (newTextComponent != null) {
+      newTextComponent.addTextOutput(componentListener);
+    }
+    player.addListener(componentListener);
+  }
+
+  public AspectRatioFrameLayout getContentFrame() {
+    return contentFrame;
+  }
+
+  public void setSurfaceVisibility(int visibility) {
+    if (surfaceView != null) {
+      surfaceView.setVisibility(visibility);
     }
   }
 
