@@ -16,7 +16,6 @@
         android:background="@drawable/yt_rewind_view"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="@drawable/yt_rewind_ripple"
         android:visibility="invisible"
         tools:visibility="visible">
 
@@ -42,7 +41,6 @@
         android:background="@drawable/yt_forward_view"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="@drawable/yt_forward_ripple"
         android:visibility="invisible"
         tools:visibility="visible">
 

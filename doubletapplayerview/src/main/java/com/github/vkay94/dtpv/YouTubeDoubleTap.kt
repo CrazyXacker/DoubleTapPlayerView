@@ -2,6 +2,7 @@ package com.github.vkay94.dtpv
 
 import android.content.Context
 import android.graphics.drawable.AnimationDrawable
+import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,8 +28,8 @@ class YouTubeDoubleTap(context: Context?, attrs: AttributeSet?) : ConstraintLayo
     var rewindContainer: FrameLayout
 
     // Animations
-    var forwardAnimation: AnimationDrawable
-    var rewindAnimation: AnimationDrawable
+    var forwardAnimation: AnimationDrawable? = null
+    var rewindAnimation: AnimationDrawable? = null
 
     // Player behaviors
     private var playerView: DoubleTapPlayerView? = null
@@ -50,13 +51,21 @@ class YouTubeDoubleTap(context: Context?, attrs: AttributeSet?) : ConstraintLayo
         forwardContainer = findViewById(R.id.forwardFrameLayout)
         rewindContainer = findViewById(R.id.rewindFrameLayout)
 
-        forwardAnimation =
-            ContextCompat.getDrawable(context!!, R.drawable.yt_forward_animation) as AnimationDrawable
-        rewindAnimation =
-            ContextCompat.getDrawable(context, R.drawable.yt_rewind_animation) as AnimationDrawable
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            forwardAnimation =
+                ContextCompat.getDrawable(
+                    context!!,
+                    R.drawable.yt_forward_animation
+                ) as AnimationDrawable
+            rewindAnimation =
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.yt_rewind_animation
+                ) as AnimationDrawable
 
-        tvForward.setCompoundDrawablesWithIntrinsicBounds(null, forwardAnimation, null, null)
-        tvRewind.setCompoundDrawablesWithIntrinsicBounds(null, rewindAnimation, null, null)
+            tvForward.setCompoundDrawablesWithIntrinsicBounds(null, forwardAnimation, null, null)
+            tvRewind.setCompoundDrawablesWithIntrinsicBounds(null, rewindAnimation, null, null)
+        }
 
         // Click listeners
         rewindContainer.setOnClickListener {
@@ -171,7 +180,7 @@ class YouTubeDoubleTap(context: Context?, attrs: AttributeSet?) : ConstraintLayo
                     resources.getQuantityString(R.plurals.dtp_rf_seconds, currentRewindForward, currentRewindForward)
 
                 rewindContainer.visibility = View.VISIBLE
-                rewindAnimation.start()
+                rewindAnimation?.start()
 
                 -1
             }
@@ -184,7 +193,7 @@ class YouTubeDoubleTap(context: Context?, attrs: AttributeSet?) : ConstraintLayo
                     resources.getQuantityString(R.plurals.dtp_rf_seconds, currentRewindForward, currentRewindForward)
 
                 forwardContainer.visibility = View.VISIBLE
-                forwardAnimation.start()
+                forwardAnimation?.start()
 
                 1
             }
@@ -212,8 +221,8 @@ class YouTubeDoubleTap(context: Context?, attrs: AttributeSet?) : ConstraintLayo
         rewindContainer.visibility = View.INVISIBLE
         forwardContainer.visibility = View.INVISIBLE
 
-        forwardAnimation.stop()
-        rewindAnimation.stop()
+        forwardAnimation?.stop()
+        rewindAnimation?.stop()
     }
 
     /**
