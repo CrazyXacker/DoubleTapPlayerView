@@ -77,6 +77,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <View android:id="@+id/exo_libass_canvas_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
     <View android:id="@id/exo_controller_placeholder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
